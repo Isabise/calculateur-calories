@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de Calories Cachées</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .calculator-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 3px solid #e9ecef;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #495057;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .category {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #ff6b6b;
+        }
+
+        .category h3 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .food-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .food-item:last-child {
+            border-bottom: none;
+        }
+
+        .food-info {
+            flex-grow: 1;
+        }
+
+        .food-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .food-portion {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .food-calories {
+            font-weight: bold;
+            color: #ff6b6b;
+            margin: 0 15px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background: #ff6b6b;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #ff5252;
+            transform: scale(1.1);
+        }
+
+        .quantity-display {
+            width: 35px;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .summary-section {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .total-calories {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .total-number {
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .total-label {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        .category-breakdown {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .impact-analysis {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .impact-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .reset-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .reset-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .total-number {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Calculateur de Calories Cachées</h1>
+            <p>Découvrez les calories invisibles de votre quotidien</p>
+        </div>
+
+        <div class="content">
+            <div class="calculator-section">
+                <h2 class="section-title">🍽️ Sélectionnez vos consommations</h2>
+                
+                <div class="category">
+                    <h3>☕ Boissons & Accompagnements</h3>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Café avec sucre</div>
+                            <div class="food-portion">1 cuillère à café</div>
+                        </div>
+                        <div class="food-calories">20 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('coffee-sugar', -1)">-</button>
+                            <div class="quantity-display" id="coffee-sugar-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('coffee-sugar', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Lait dans le café</div>
+                            <div class="food-portion">2 cuillères à soupe</div>
+                        </div>
+                        <div class="food-calories">15 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('coffee-milk', -1)">-</button>
+                            <div class="quantity-display" id="coffee-milk-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('coffee-milk', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Jus de fruit industriel</div>
+                            <div class="food-portion">1 verre (200ml)</div>
+                        </div>
+                        <div class="food-calories">85 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('fruit-juice', -1)">-</button>
+                            <div class="quantity-display" id="fruit-juice-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('fruit-juice', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Soda light</div>
+                            <div class="food-portion">1 canette (330ml)</div>
+                        </div>
+                        <div class="food-calories">8 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('diet-soda', -1)">-</button>
+                            <div class="quantity-display" id="diet-soda-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('diet-soda', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h3>🥗 Assaisonnements & Sauces</h3>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Vinaigrette salade</div>
+                            <div class="food-portion">1 cuillère à soupe</div>
+                        </div>
+                        <div class="food-calories">65 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('dressing', -1)">-</button>
+                            <div class="quantity-display" id="dressing-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('dressing', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Ketchup</div>
+                            <div class="food-portion">1 cuillère à soupe</div>
+                        </div>
+                        <div class="food-calories">20 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('ketchup', -1)">-</button>
+                            <div class="quantity-display" id="ketchup-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('ketchup', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Mayonnaise</div>
+                            <div class="food-portion">1 cuillère à café</div>
+                        </div>
+                        <div class="food-calories">35 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('mayo', -1)">-</button>
+                            <div class="quantity-display" id="mayo-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('mayo', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Huile de cuisson</div>
+                            <div class="food-portion">1 cuillère à café</div>
+                        </div>
+                        <div class="food-calories">40 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('cooking-oil', -1)">-</button>
+                            <div class="quantity-display" id="cooking-oil-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('cooking-oil', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h3>🍪 Grignotages & Extras</h3>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Bonbon/Chewing-gum</div>
+                            <div class="food-portion">1 pièce</div>
+                        </div>
+                        <div class="food-calories">10 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('candy', -1)">-</button>
+                            <div class="quantity-display" id="candy-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('candy', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Biscuit apéritif</div>
+                            <div class="food-portion">5 pièces</div>
+                        </div>
+                        <div class="food-calories">45 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('crackers', -1)">-</button>
+                            <div class="quantity-display" id="crackers-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('crackers', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Cuillère de Nutella</div>
+                            <div class="food-portion">1 cuillère à café</div>
+                        </div>
+                        <div class="food-calories">55 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('nutella', -1)">-</button>
+                            <div class="quantity-display" id="nutella-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('nutella', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Fruits secs (amandes)</div>
+                            <div class="food-portion">5 pièces</div>
+                        </div>
+                        <div class="food-calories">35 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('nuts', -1)">-</button>
+                            <div class="quantity-display" id="nuts-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('nuts', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h3>🧈 Matières grasses invisibles</h3>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Beurre sur tartine</div>
+                            <div class="food-portion">5g (fine couche)</div>
+                        </div>
+                        <div class="food-calories">38 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('butter', -1)">-</button>
+                            <div class="quantity-display" id="butter-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('butter', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="food-name">Crème dans la soupe</div>
+                            <div class="food-portion">1 cuillère à soupe</div>
+                        </div>
+                        <div class="food-calories">52 kcal</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('cream', -1)">-</button>
+                            <div class="quantity-display" id="cream-qty">0</div>
+                            <button class="quantity-btn" onclick="changeQuantity('cream', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <h2 class="section-title">📊 Votre Bilan Calorique</h2>
+                
+                <div class="total-calories">
+                    <div class="total-number" id="total-calories">0</div>
+                    <div class="total-label">calories cachées par jour</div>
+                </div>
+
+                <div class="category-breakdown">
+                    <h4 style="margin-bottom: 15px; text-align: center;">Répartition par catégorie</h4>
+                    <div class="breakdown-item">
+                        <span>Boissons & Accompagnements</span>
+                        <span id="drinks-total">0 kcal</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Assaisonnements & Sauces</span>
+                        <span id="sauces-total">0 kcal</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Grignotages & Extras</span>
+                        <span id="snacks-total">0 kcal</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Matières grasses invisibles</span>
+                        <span id="fats-total">0 kcal</span>
+                    </div>
+                </div>
+
+                <div class="impact-analysis">
+                    <h4 style="margin-bottom: 15px; text-align: center;">Impact sur votre poids</h4>
+                    <div class="impact-text" id="impact-text">
+                        Ajoutez des aliments pour voir l'impact potentiel sur votre poids.
+                    </div>
+                </div>
+
+                <button class="reset-btn" onclick="resetAll()">🔄 Tout remettre à zéro</button>
+
+                <div class="warning">
+                    <strong>💡 Conseil :</strong> Ces calories s'accumulent souvent sans qu'on s'en rende compte. Une vigilance sur ces petits extras peut faire une grande différence !
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const foods = {
+            'coffee-sugar': { name: 'Café avec sucre', calories: 20, category: 'drinks' },
+            'coffee-milk': { name: 'Lait dans le café', calories: 15, category: 'drinks' },
+            'fruit-juice': { name: 'Jus de fruit industriel', calories: 85, category: 'drinks' },
+            'diet-soda': { name: 'Soda light', calories: 8, category: 'drinks' },
+            'dressing': { name: 'Vinaigrette salade', calories: 65, category: 'sauces' },
+            'ketchup': { name: 'Ketchup', calories: 20, category: 'sauces' },
+            'mayo': { name: 'Mayonnaise', calories: 35, category: 'sauces' },
+            'cooking-oil': { name: 'Huile de cuisson', calories: 40, category: 'sauces' },
+            'candy': { name: 'Bonbon/Chewing-gum', calories: 10, category: 'snacks' },
+            'crackers': { name: 'Biscuit apéritif', calories: 45, category: 'snacks' },
+            'nutella': { name: 'Cuillère de Nutella', calories: 55, category: 'snacks' },
+            'nuts': { name: 'Fruits secs (amandes)', calories: 35, category: 'snacks' },
+            'butter': { name: 'Beurre sur tartine', calories: 38, category: 'fats' },
+            'cream': { name: 'Crème dans la soupe', calories: 52, category: 'fats' }
+        };
+
+        let quantities = {};
+
+        // Initialize quantities
+        Object.keys(foods).forEach(food => {
+            quantities[food] = 0;
+        });
+
+        function changeQuantity(foodId, change) {
+            quantities[foodId] = Math.max(0, quantities[foodId] + change);
+            document.getElementById(foodId + '-qty').textContent = quantities[foodId];
+            updateTotals();
+        }
+
+        function updateTotals() {
+            let totalCalories = 0;
+            let categoryTotals = {
+                drinks: 0,
+                sauces: 0,
+                snacks: 0,
+                fats: 0
+            };
+
+            Object.keys(foods).forEach(foodId => {
+                const quantity = quantities[foodId];
+                const calories = foods[foodId].calories * quantity;
+                totalCalories += calories;
+                categoryTotals[foods[foodId].category] += calories;
+            });
+
+            document.getElementById('total-calories').textContent = totalCalories;
+            document.getElementById('drinks-total').textContent = categoryTotals.drinks + ' kcal';
+            document.getElementById('sauces-total').textContent = categoryTotals.sauces + ' kcal';
+            document.getElementById('snacks-total').textContent = categoryTotals.snacks + ' kcal';
+            document.getElementById('fats-total').textContent = categoryTotals.fats + ' kcal';
+
+            updateImpactAnalysis(totalCalories);
+        }
+
+        function updateImpactAnalysis(dailyCalories) {
+            const impactText = document.getElementById('impact-text');
+            
+            if (dailyCalories === 0) {
+                impactText.innerHTML = "Ajoutez des aliments pour voir l'impact potentiel sur votre poids.";
+                return;
+            }
+
+            const weeklyCalories = dailyCalories * 7;
+            const monthlyCalories = dailyCalories * 30;
+            const yearlyCalories = dailyCalories * 365;
+            
+            // 1 kg de graisse = environ 7700 kcal
+            const potentialYearlyWeightGain = (yearlyCalories / 7700).toFixed(1);
+            
+            let analysisText = `
+                <strong>${dailyCalories} kcal/jour</strong> peuvent sembler insignifiantes, mais représentent :<br><br>
+                📅 <strong>${weeklyCalories} kcal par semaine</strong><br>
+                📅 <strong>${monthlyCalories} kcal par mois</strong><br>
+                📅 <strong>${yearlyCalories} kcal par an</strong><br><br>
+            `;
+            
+            if (potentialYearlyWeightGain > 0.5) {
+                analysisText += `⚠️ <strong>Impact potentiel :</strong> jusqu'à <strong>${potentialYearlyWeightGain} kg</strong> de prise de poids par an si ces calories ne sont pas compensées par l'activité physique.`;
+            } else {
+                analysisText += `✅ <strong>Impact modéré :</strong> environ <strong>${potentialYearlyWeightGain} kg</strong> par an. Une activité physique légère peut facilement compenser ces calories.`;
+            }
+            
+            impactText.innerHTML = analysisText;
+        }
+
+        function resetAll() {
+            Object.keys(quantities).forEach(foodId => {
+                quantities[foodId] = 0;
+                document.getElementById(foodId + '-qty').textContent = 0;
+            });
+            updateTotals();
+        }
+
+        // Initialize display
+        updateTotals();
+    </script>
+</body>
+</html>
