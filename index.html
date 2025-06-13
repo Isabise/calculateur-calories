@@ -88,6 +88,8 @@
             justify-content: space-between;
             padding: 10px 0;
             border-bottom: 1px solid #f1f3f4;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .food-item:last-child {
@@ -95,7 +97,8 @@
         }
 
         .food-info {
-            flex-grow: 1;
+            flex: 1;
+            min-width: 200px;
         }
 
         .food-name {
@@ -109,12 +112,19 @@
             margin-top: 2px;
         }
 
+        .food-calories-and-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: nowrap;
+        }
+
         .food-calories {
             font-weight: bold;
-            color: #3d0d25;
-            margin: 0 15px;
+            color: #4b3d7b;
             min-width: 60px;
             text-align: center;
+            white-space: nowrap;
         }
 
         .quantity-control {
@@ -136,6 +146,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
         .quantity-btn:hover {
@@ -233,19 +244,159 @@
             text-align: center;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             .content {
                 grid-template-columns: 1fr;
                 gap: 20px;
-                padding: 20px;
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 20px 15px;
             }
             
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .calculator-section, .summary-section {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
             }
             
             .total-number {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+            }
+            
+            .category {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .category h3 {
+                font-size: 1.1rem;
+                margin-bottom: 12px;
+            }
+            
+            .food-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 12px 0;
+            }
+            
+            .food-info {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .food-calories-and-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .food-name {
+                font-size: 0.95rem;
+            }
+            
+            .food-portion {
+                font-size: 0.8rem;
+            }
+            
+            .food-calories {
+                font-size: 0.9rem;
+            }
+            
+            .quantity-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 1.1rem;
+            }
+            
+            .quantity-display {
+                width: 30px;
+                font-size: 0.9rem;
+            }
+            
+            .breakdown-item {
+                font-size: 0.9rem;
+                padding: 6px 0;
+            }
+            
+            .impact-text {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+            
+            .reset-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .warning {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 15px 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+                margin-bottom: 8px;
+            }
+            
+            .content {
+                padding: 10px;
+                gap: 15px;
+            }
+            
+            .calculator-section, .summary-section {
+                padding: 15px;
+            }
+            
+            .category {
+                padding: 12px;
+            }
+            
+            .total-number {
+                font-size: 1.8rem;
+            }
+            
+            .breakdown-item {
+                flex-wrap: wrap;
+                gap: 5px;
+                font-size: 0.85rem;
+            }
+            
+            .quantity-btn {
+                width: 26px;
+                height: 26px;
+                font-size: 1rem;
+            }
+            
+            .quantity-display {
+                width: 25px;
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -268,11 +419,13 @@
                             <div class="food-name">Café avec sucre</div>
                             <div class="food-portion">1 cuillère à café de sucre</div>
                         </div>
-                        <div class="food-calories">20 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('coffee-sugar', -1)">-</button>
-                            <div class="quantity-display" id="coffee-sugar-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('coffee-sugar', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">20 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('coffee-sugar', -1)">-</button>
+                                <div class="quantity-display" id="coffee-sugar-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('coffee-sugar', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="food-item">
@@ -280,11 +433,13 @@
                             <div class="food-name">Thé avec sucre</div>
                             <div class="food-portion">1 cuillère à café de sucre</div>
                         </div>
-                        <div class="food-calories">20 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('tea-sugar', -1)">-</button>
-                            <div class="quantity-display" id="tea-sugar-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('tea-sugar', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">20 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('tea-sugar', -1)">-</button>
+                                <div class="quantity-display" id="tea-sugar-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('tea-sugar', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="food-item">
@@ -292,11 +447,13 @@
                             <div class="food-name">Lait dans café/thé</div>
                             <div class="food-portion">2 cuillères à soupe</div>
                         </div>
-                        <div class="food-calories">15 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('coffee-milk', -1)">-</button>
-                            <div class="quantity-display" id="coffee-milk-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('coffee-milk', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">15 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('coffee-milk', -1)">-</button>
+                                <div class="quantity-display" id="coffee-milk-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('coffee-milk', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -308,11 +465,13 @@
                             <div class="food-name">Huile (salade/cuisson)</div>
                             <div class="food-portion">1 cuillère à soupe</div>
                         </div>
-                        <div class="food-calories">120 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('oil', -1)">-</button>
-                            <div class="quantity-display" id="oil-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('oil', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">120 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('oil', -1)">-</button>
+                                <div class="quantity-display" id="oil-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('oil', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="food-item">
@@ -320,11 +479,13 @@
                             <div class="food-name">Vinaigrette toute prête</div>
                             <div class="food-portion">1 cuillère à soupe</div>
                         </div>
-                        <div class="food-calories">65 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('dressing', -1)">-</button>
-                            <div class="quantity-display" id="dressing-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('dressing', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">65 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('dressing', -1)">-</button>
+                                <div class="quantity-display" id="dressing-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('dressing', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="food-item">
@@ -332,11 +493,13 @@
                             <div class="food-name">Mayonnaise</div>
                             <div class="food-portion">1 cuillère à café</div>
                         </div>
-                        <div class="food-calories">35 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('mayo', -1)">-</button>
-                            <div class="quantity-display" id="mayo-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('mayo', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">35 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('mayo', -1)">-</button>
+                                <div class="quantity-display" id="mayo-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('mayo', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -348,11 +511,13 @@
                             <div class="food-name">Chips</div>
                             <div class="food-portion">1 paquet individuel (30g)</div>
                         </div>
-                        <div class="food-calories">160 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('chips', -1)">-</button>
-                            <div class="quantity-display" id="chips-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('chips', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">160 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('chips', -1)">-</button>
+                                <div class="quantity-display" id="chips-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('chips', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="food-item">
@@ -360,11 +525,13 @@
                             <div class="food-name">Fruits secs</div>
                             <div class="food-portion">1 poignée (30g)</div>
                         </div>
-                        <div class="food-calories">180 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('nuts', -1)">-</button>
-                            <div class="quantity-display" id="nuts-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('nuts', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">180 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('nuts', -1)">-</button>
+                                <div class="quantity-display" id="nuts-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('nuts', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="food-item">
@@ -372,11 +539,13 @@
                             <div class="food-name">Chocolat</div>
                             <div class="food-portion">1/4 de plaquette (25g)</div>
                         </div>
-                        <div class="food-calories">130 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('chocolate', -1)">-</button>
-                            <div class="quantity-display" id="chocolate-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('chocolate', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">130 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('chocolate', -1)">-</button>
+                                <div class="quantity-display" id="chocolate-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('chocolate', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="food-item">
@@ -384,11 +553,13 @@
                             <div class="food-name">Morceau de pain</div>
                             <div class="food-portion">1 tranche (30g)</div>
                         </div>
-                        <div class="food-calories">80 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('bread', -1)">-</button>
-                            <div class="quantity-display" id="bread-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('bread', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">80 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('bread', -1)">-</button>
+                                <div class="quantity-display" id="bread-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('bread', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -400,11 +571,13 @@
                             <div class="food-name">Beurre sur tartine</div>
                             <div class="food-portion">5g (fine couche)</div>
                         </div>
-                        <div class="food-calories">38 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('butter', -1)">-</button>
-                            <div class="quantity-display" id="butter-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('butter', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">38 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('butter', -1)">-</button>
+                                <div class="quantity-display" id="butter-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('butter', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="food-item">
@@ -412,11 +585,13 @@
                             <div class="food-name">Crème dans la soupe</div>
                             <div class="food-portion">1 cuillère à soupe</div>
                         </div>
-                        <div class="food-calories">52 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('cream', -1)">-</button>
-                            <div class="quantity-display" id="cream-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('cream', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">52 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('cream', -1)">-</button>
+                                <div class="quantity-display" id="cream-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('cream', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -428,11 +603,13 @@
                             <div class="food-name">Verre de rosé</div>
                             <div class="food-portion">1 verre (150ml)</div>
                         </div>
-                        <div class="food-calories">105 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('rose-wine', -1)">-</button>
-                            <div class="quantity-display" id="rose-wine-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('rose-wine', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">105 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('rose-wine', -1)">-</button>
+                                <div class="quantity-display" id="rose-wine-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('rose-wine', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="food-item">
@@ -440,11 +617,13 @@
                             <div class="food-name">Apéro Spritz</div>
                             <div class="food-portion">1 verre (200ml)</div>
                         </div>
-                        <div class="food-calories">140 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('spritz', -1)">-</button>
-                            <div class="quantity-display" id="spritz-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('spritz', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">140 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('spritz', -1)">-</button>
+                                <div class="quantity-display" id="spritz-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('spritz', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="food-item">
@@ -452,11 +631,13 @@
                             <div class="food-name">Coupe de champagne</div>
                             <div class="food-portion">1 coupe (125ml)</div>
                         </div>
-                        <div class="food-calories">90 kcal</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity('champagne', -1)">-</button>
-                            <div class="quantity-display" id="champagne-qty">0</div>
-                            <button class="quantity-btn" onclick="changeQuantity('champagne', 1)">+</button>
+                        <div class="food-calories-and-controls">
+                            <div class="food-calories">90 kcal</div>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="changeQuantity('champagne', -1)">-</button>
+                                <div class="quantity-display" id="champagne-qty">0</div>
+                                <button class="quantity-btn" onclick="changeQuantity('champagne', 1)">+</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -612,4 +793,4 @@
         updateTotals();
     </script>
 </body>
-</html>    
+</html>
