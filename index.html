@@ -3,25 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculateur de calories cachées - Découvrez les calories invisibles de votre quotidien">
+    <title>Calculateur de Calories Cachées</title>
+    <meta name="description" content="Découvrez les calories invisibles de votre quotidien">
+    
+    <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#d98e79">
+    <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Calories Cachées">
+    <link rel="apple-touch-icon" href="/Calculateur-de-calories192.png">
     
-    <title>Calculateur de Calories Cachées</title>
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
-    
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icon-16.png">
-    <link rel="apple-touch-icon" href="/icon-192.png">
-    
-    <!-- PWA Meta tags -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Calories Cachées">
     <style>
         * {
             margin: 0;
@@ -31,7 +23,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #bccbb1 0%, #e6ecee 100%);
+            background: linear-gradient(135deg, #f9f4ed 0%, #B7C2B2 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -46,7 +38,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #d98e79, #4b3d7b);
+            background: linear-gradient(135deg, #d98e79, #3d0d25);
             color: white;
             padding: 30px;
             text-align: center;
@@ -74,20 +66,12 @@
             background: #f9f4ed;
             border-radius: 15px;
             padding: 25px;
-            border: 3px solid #e6ecee;
+            border: 3px solid #B7C2B2;
         }
 
-        .section-title {
+        .summary-section .section-title {
             font-size: 1.4rem;
-            color: #4d3949;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .calculator-section .section-title {
-            font-size: 1.4rem;
-            color: #4d3949;
+            color: white;
             margin-bottom: 20px;
             text-align: center;
             font-weight: 600;
@@ -129,7 +113,7 @@
 
         .food-name {
             font-weight: 500;
-            color: #333;
+            color: #3d0d25;
         }
 
         .food-portion {
@@ -147,7 +131,7 @@
 
         .food-calories {
             font-weight: bold;
-            color: #4b3d7b;
+            color: #3d0d25;
             min-width: 60px;
             text-align: center;
             white-space: nowrap;
@@ -184,22 +168,14 @@
             width: 35px;
             text-align: center;
             font-weight: bold;
-            color: #333;
+            color: #3d0d25;
         }
 
         .summary-section {
-            background: linear-gradient(135deg, #d98e79 0%, #4b3d7b 100%);
+            background: linear-gradient(135deg, #d98e79 0%, #3d0d25 100%);
             color: white;
             border-radius: 15px;
             padding: 25px;
-        }
-
-        .summary-section .section-title {
-            font-size: 1.4rem;
-            color: white;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: 600;
         }
 
         .total-calories {
@@ -270,8 +246,8 @@
 
         .warning {
             background: #f9f4ed;
-            border: 1px solid #bccbb1;
-            color: #4d3949;
+            border: 1px solid #B7C2B2;
+            color: #3d0d25;
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
@@ -788,54 +764,4 @@
             const impactText = document.getElementById('impact-text');
             
             if (dailyCalories === 0) {
-                impactText.innerHTML = "Ajoutez des aliments pour voir l'impact potentiel sur votre poids.";
-                return;
-            }
-
-            const weeklyCalories = dailyCalories * 7;
-            const monthlyCalories = dailyCalories * 30;
-            const yearlyCalories = dailyCalories * 365;
-            
-            // 1 kg de graisse = environ 7700 kcal
-            const potentialYearlyWeightGain = (yearlyCalories / 7700).toFixed(1);
-            
-            let analysisText = `
-                <strong>${dailyCalories} kcal/jour</strong> peuvent sembler insignifiantes, mais représentent :<br><br>
-                📅 <strong>${weeklyCalories} kcal par semaine</strong><br>
-                📅 <strong>${monthlyCalories} kcal par mois</strong><br>
-                📅 <strong>${yearlyCalories} kcal par an</strong><br><br>
-            `;
-            
-            if (potentialYearlyWeightGain > 0.5) {
-                analysisText += `⚠️ <strong>Impact potentiel :</strong> jusqu'à <strong>${potentialYearlyWeightGain} kg</strong> de prise de poids par an si ces calories ne sont pas compensées par l'activité physique.`;
-            } else {
-                analysisText += `✅ <strong>Impact modéré :</strong> environ <strong>${potentialYearlyWeightGain} kg</strong> par an. Une activité physique légère peut facilement compenser ces calories.`;
-            }
-            
-            impactText.innerHTML = analysisText;
-        }
-
-        function resetAll() {
-            Object.keys(quantities).forEach(foodId => {
-                quantities[foodId] = 0;
-                document.getElementById(foodId + '-qty').textContent = 0;
-            });
-            updateTotals();
-        }
-
-        // Initialize display
-        updateTotals();
-    </script>
-</body>
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
-          .then(function(registration) {
-            console.log('SW registered: ', registration);
-          })
-          .catch(function(registrationError) {
-            console.log('SW registration failed: ', registrationError);
-          });
-      }
-    </script>
-</html>
+                impactText.innerHTML = "Ajoutez des aliments pour voir l'impact potentiel sur vo
