@@ -764,4 +764,56 @@
             const impactText = document.getElementById('impact-text');
             
             if (dailyCalories === 0) {
-                impactText.innerHTML = "Ajoutez des aliments pour voir l'impact potentiel sur vo
+                impactText.innerHTML = "Ajoutez des aliments pour voir l'impact potentiel sur votre poids.";
+                return;
+            }
+
+            const weeklyCalories = dailyCalories * 7;
+            const monthlyCalories = dailyCalories * 30;
+            const yearlyCalories = dailyCalories * 365;
+            
+            // 1 kg de graisse = environ 7700 kcal
+            const potentialYearlyWeightGain = (yearlyCalories / 7700).toFixed(1);
+            
+            let analysisText = `
+                <strong>${dailyCalories} kcal/jour</strong> peuvent sembler insignifiantes, mais représentent :<br><br>
+                📅 <strong>${weeklyCalories} kcal par semaine</strong><br>
+                📅 <strong>${monthlyCalories} kcal par mois</strong><br>
+                📅 <strong>${yearlyCalories} kcal par an</strong><br><br>
+            `;
+            
+            if (potentialYearlyWeightGain > 0.5) {
+                analysisText += `⚠️ <strong>Impact potentiel :</strong> jusqu'à <strong>${potentialYearlyWeightGain} kg</strong> de prise de poids par an si ces calories ne sont pas compensées par l'activité physique.`;
+            } else {
+                analysisText += `✅ <strong>Impact modéré :</strong> environ <strong>${potentialYearlyWeightGain} kg</strong> par an. Une activité physique légère peut facilement compenser ces calories.`;
+            }
+            
+            impactText.innerHTML = analysisText;
+        }
+
+        function resetAll() {
+            Object.keys(quantities).forEach(foodId => {
+                quantities[foodId] = 0;
+                document.getElementById(foodId + '-qty').textContent = 0;
+            });
+            updateTotals();
+        }
+
+        // Initialize display
+        updateTotals();
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('SW registered: ', registration);
+                })
+                .catch(function(registrationError) {
+                    console.log('SW registration failed: ', registrationError);
+                });
+        }
+    </script>
+</body>
+</html>
