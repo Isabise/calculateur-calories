@@ -3,8 +3,8 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png'
+  '/Calculateur-de-calories192.png',
+  '/Calculateur-de-calories512.png'
 ];
 
 // Installation du service worker
@@ -54,8 +54,8 @@ self.addEventListener('push', function(event) {
   if (event.data) {
     const options = {
       body: event.data.text(),
-      icon: '/icon-192.png',
-      badge: '/icon-192.png',
+      icon: '/Calculateur-de-calories192.png',
+      badge: '/Calculateur-de-calories192.png',
       vibrate: [100, 50, 100],
       data: {
         dateOfArrival: Date.now(),
